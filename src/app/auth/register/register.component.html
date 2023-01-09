@@ -1,0 +1,159 @@
+<div class="hold-transition register-page">
+  <div class="register-box">
+    <div class="register-logo">
+      <a href="../../index2.html"><b>ERP PERU</b></a>
+    </div>
+
+    <div class="card ">
+      <div class="card-body register-card-body">
+        <p class="login-box-msg">Registrate para acceder</p>
+
+        <form method="post" [formGroup] = "registerForm" (ngSubmit)="create()">
+
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Usuario" id="usuario" formControlName="usuario">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user" style="color: rgb(48, 37, 37);"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Primer Nombre" id="primerNombre" formControlName="primerNombre">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user" style="color: rgb(48, 37, 37);"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Segundo Nombre" id="segundoNombre" formControlName="segundoNombre">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user" style="color: rgb(48, 37, 37);"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Apellidos" id="apellidos" formControlName="apellidos">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user" style="color: rgb(48, 37, 37);"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-group mb-3">
+            <input type="email" class="form-control" placeholder="Correo Electronico" id="email" formControlName="email">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope" style="color: rgb(48, 37, 37);"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-group mb-3">
+            <input type="password" class="form-control" placeholder="Contraseña" id="password" formControlName="password">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock" style="color: rgb(48, 37, 37);;"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-group mb-3">
+            <input type="password" class="form-control" placeholder="Reingresar Contraseña" id="repassword" formControlName="repassword">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock" style="color: rgb(48, 37, 37);"></span>
+              </div>
+            </div>
+          </div>
+          <!--
+          <div class="form-group" data-select2-id="8">
+            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;"
+                data-select2-id="1" tabindex="-1" aria-hidden="true" id="pais" formControlName="pais">
+              <option data-select2-id="1">Argentina</option>
+              <option data-select2-id="2">Bolivia</option>
+              <option data-select2-id="3">Brasil</option>
+              <option data-select2-id="4">Chile</option>
+              <option data-select2-id="5">Colombia</option>
+              <option data-select2-id="6">Ecuador</option>
+              <option data-select2-id="7">Paraguay</option>
+              <option selected="selected" data-select2-id="8">Perú</option>
+              <option data-select2-id="9">Uruguay</option>
+            </select>
+          </div>
+          -->
+
+          <div class="form-group" data-select2-id="8">
+
+            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;"
+              data-select2-id="1" tabindex="-1" aria-hidden="true" id="pais" formControlName="pais">
+
+              <option *ngFor="let pais of paises" [value]="pais.id">
+                {{pais.nombre}}
+              </option>
+
+            </select>
+          </div>
+
+          <div class="form-group">
+            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;"
+              data-select2-id="1" tabindex="-1" aria-hidden="true" id="plan" formControlName="plan">
+
+              <option *ngFor="let plan of planes" [value]="plan.id">
+                {{plan.nombre}}
+              </option>
+
+            </select>
+          </div>
+
+          <div class="form-group">
+            <select class="form-control select2 select2-hidden-accessible" style="width: 100%;"
+              data-select2-id="1" tabindex="-1" aria-hidden="true" id="sistema" formControlName="sistema">
+
+              <option *ngFor="let sistema of sistemas" [value]="sistema.id">
+                {{sistema.nombre}}
+              </option>
+
+            </select>
+          </div>
+
+
+          <div class="row">
+            <div class="col-8">
+              <!--
+              <div class="icheck-primary">
+                <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+                <label for="agreeTerms">
+                  <a href="#" class="ml-2">Estoy de acuerdo con los terminos</a>
+                </label>
+              </div>
+              -->
+            </div>
+            <!-- /.col -->
+            <div class="col-4">
+              <button [disabled]="registerForm.invalid" type="submit" class="btn btn-outline-secondary btn-block">Registrate</button>
+            </div>
+            <!-- /.col -->
+          </div>
+        </form>
+      <!--
+        <div class="social-auth-links text-center">
+          <hr>
+          <a href="#" class="btn btn-block btn-outline-secondary">
+            <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
+          </a>
+        </div>
+      -->
+        <a routerLink="/login" class="text-center link-reg">Ya tengo una cuenta</a>
+      </div>
+      <!-- /.form-box -->
+    </div><!-- /.card -->
+  </div>
+  <!-- /.register-box -->
+</div>

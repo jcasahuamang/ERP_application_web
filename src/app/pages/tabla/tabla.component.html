@@ -1,0 +1,469 @@
+<div class="card">
+  <div class="card-header">
+      <h3 class="card-title" style="color:rgb(1, 112, 185)">
+          <i class="far fa-list-alt"></i>
+            &nbsp;
+            Relación de Tablas Generales
+            &nbsp;
+      </h3>
+      <div class="row">
+        <div class="col-md-7">
+
+        </div>
+        <div class="col-md-5">
+          <!--
+          <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" (click)="onResetFormTabla()"
+            data-target="#viewModaltabla">
+              <i  class="far fa-plus-square"></i>&nbsp;&nbsp;Nuevo
+          </button>
+          -->
+          &nbsp;&nbsp;
+          <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" (click)="onExportExcel()">
+            <i class="fa fa-file-excel"></i>&nbsp;&nbsp;Exportar Excel
+          </button>
+          &nbsp;&nbsp;
+          <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" (click)="onExportPdf()"
+          >
+            <i class="fa fa-file-pdf"></i>&nbsp;&nbsp;Exportar PDF
+          </button>
+
+        </div>
+
+      </div>
+
+
+
+    <!--
+    <div class="card-tools">
+      <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+        <i class="fas fa-minus"></i>
+      </button>
+      <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  -->
+  </div>
+
+  <div class="card-body">
+      <!--
+    Cuerpo - Start creating your amazing application!
+ -->
+
+    <div class="col-sm-12">
+      <form (ngSubmit)="onSearchTabla()">
+
+          <div class="form-group row">
+              <div class="col-md-9">
+                  <div class="input-group">
+                      <select class="form-control form-control-sm col-md-3" name="selectedBusqueda"  [(ngModel)]="selectedBusqueda">
+                          <option value="Tipo">Tipo</option>
+                      </select>
+                      <input type="text" name="searchInput" [(ngModel)]="searchInput"
+                          class="form-control form-control-sm" placeholder ="  Seleccione tipo de busqueda e ingrese el Valor" autocomplete="off">
+
+
+                      <button type="submit" class="btn btn-sm btn-info">
+                          <i class="fa fa-search"></i> Filtrar
+                      </button>
+
+                  </div>
+              </div>
+          </div>
+
+      </form>
+    </div>
+
+    <div class="table-responsive">
+
+        <table mat-table [dataSource]="tablasData" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="Opciones">
+                <th mat-header-cell *matHeaderCellDef> Opciones </th>
+
+                <td mat-cell *matCellDef="let tabla">
+                  <!--
+                    <button type="button" name="editar" (click)="onUpdateTabla(tabla)"
+                        title="Editar Tabla" data-toggle="modal" data-target="#viewModaltabla"
+                        class="btn button-edit btn-sm">
+                        <i class="far fa-edit"></i>
+                    </button>
+                  -->
+                    <button type="button" name="editar" (click)="onUpdateTablaDet(tabla)"
+                        title="Editar Detalle " data-toggle="modal" data-target="#viewModaltablaDet"
+                        class="btn button-edit btn-sm">
+                        <i class="far fa-edit"></i>
+                    </button>
+                    &nbsp;
+                    <!--
+                    <button type="button" name="eliminar" (click)="onDeleteTabla(tabla)"
+                        title="Eliminar Tabla" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                  -->
+
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="TipoTabla">
+                <th mat-header-cell *matHeaderCellDef> Tipo Tabla</th>
+                <td mat-cell *matCellDef="let tabla"> {{tabla.tipoTabla}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Nombre">
+              <th mat-header-cell *matHeaderCellDef> Nombre </th>
+              <td mat-cell *matCellDef="let tabla"> {{tabla.nombre}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="tablasCol"></tr>
+            <tr mat-row *matRowDef="let row; columns: tablasCol;"></tr>
+
+
+        </table>
+
+        <mat-paginator #paginatortablas [pageSizeOptions]="[6,10]" showFirstLastButtons></mat-paginator>
+
+    </div>
+
+
+  </div>
+  <!-- /.card-body -->
+  <!-- <div class="card-footer">
+    Footer
+  </div>
+  -->
+  <!-- /.card-footer-->
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="viewModaltabla" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h3 class="modal-title" id="exampleModalLongTitle" style="color:rgb(1, 112, 185)" *ngIf="accionNuevo">Creando Tabla General</h3>
+            <h3 class="modal-title" id="exampleModalLongTitle"  style="color:rgb(1, 112, 185)" *ngIf="!accionNuevo">Editando Tabla General</h3>
+
+            <button type="button" #closeTabla class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+              <div class="container-fluid">
+
+                  <div class="row">
+                      <div class="col-md-12">
+
+                        <form [formGroup]="formTabla" (ngSubmit)="onSubmit()" class="form-horizontal">
+
+                          <div class="form-group row mb-2">
+
+                              <div class="col-sm-3">
+                                  <label for="input"> Tipo</label>
+                                  <input type="text" class="form-control form-control-sm" formControlName="tipoTabla" name="tipoTabla"
+                                  [ngClass]="{ 'is-invalid': submitted && f.tipoTabla.errors }">
+                              </div>
+                              <div class="col-sm-6">
+                                <label for="input"> Nombre</label>
+                                <input type="text" class="form-control form-control-sm" formControlName="nombre" name="nombre"
+                                [ngClass]="{ 'is-invalid': submitted && f.nombre.errors }">
+                              </div>
+                              <div class="col-sm-1">
+                                <label for="input"> Sistema</label>
+                              </div>
+                              <div class="col-sm-1">
+                              <input type="checkbox" class="form-control form-control-sm" formControlName="sistema" name="sistema">
+                              </div>
+
+                          </div>
+
+                          <div class="form-group row mb-2">
+                          </div>
+
+                          <div class="form-group row mb-2">
+                            <div class="col-sm-10 text-right">
+                              <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cerrar</button>
+                            </div>
+
+                            <div class="col-sm-2 text-right">
+                                <button type="submit" class="btn btn-outline-success" #closeBtn>Guardar</button>
+                            </div>
+                        </div>
+                        </form>
+
+                      </div>
+                  </div>
+
+              </div>
+
+          </div>
+
+          <div class="modal-footer">
+            <!--
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn btn-info" #closeBtn>Guardar</button>
+              -->
+          </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="viewModaltablaDet" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
+
+    <div class="modal-dialog modal-lg" style="max-width: 80%!important;" role="document">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <!-- style="color:rgb(1, 112, 185)" -->
+            <h4>Tabla</h4>
+            <h4 class="modal-title" id="exampleModalLongTitle"  style="color:rgb(1, 112, 185)" *ngIf="accionNuevo">: {{tipoTablaDetActual}} - {{nombreDetActual}} </h4>
+            <h4 class="modal-title" id="exampleModalLongTitle"  style="color:rgb(1, 112, 185)" *ngIf="!accionNuevo">: {{tipoTablaDetActual}} - {{nombreDetActual}} </h4>
+
+            <button type="button" #closeTablaDet class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+        </div>
+
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-3">
+                      <mat-form-field style="width: 90%">
+                        <mat-label>Filtrar</mat-label>
+                        <input matInput (keyup)="applyFilter($event)" placeholder="Ingrese valor" #input>
+                      </mat-form-field>
+              </div>
+              <div class="col-md-3">
+                  <mat-form-field style="width: 90%; float: left;">
+                    <mat-label>Ir a Pagina</mat-label>
+                    <input matInput type="number" placeholder="Ingresar pagina" [(ngModel)]="pageNumber" (ngModelChange)="goToPage()">
+                  </mat-form-field>
+              </div>
+
+              <div class="col-md-2 text-right">
+                <!-- <button><mat-icon (click)="AddNewRow()" class="add-button">add_box</mat-icon></button> -->
+                <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" (click)="AddNewRow()">Insertar</button>
+              </div>
+              <div class="col-md-2 text-right">
+                <button type="submit" class="btn btn-outline-success btn-sm" #closeBtn (click)="onSubmitDet()">Guardar</button>
+              </div>
+              <div class="col-md-2 text-right">
+                <button type="button" class="btn btn-outline-danger btn-sm" data-dismiss="modal">Cerrar</button>
+              </div>
+
+            </div>
+
+            <div class="table-responsive">
+              <div class="mat-elevation-z8">
+                <form [formGroup]="VOForm" autocomplete="off">
+                  <ng-container formArrayName="VORows">
+
+                        <table #table mat-table [dataSource]="dataSource" class="mat-elevation-z8" class="TablaDet">
+
+                          <!-- idTabla Column -->
+                          <ng-container matColumnDef="idTabla">
+                            <th mat-header-cell *matHeaderCellDef class="CabeceraDet"> Id. Tabla </th>
+                            <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+                              <mat-form-field style="width: 40px;" appearance="standard">
+                                <input matInput type="number" formControlName="idTabla" [readonly]="true" style="color:red">
+                              </mat-form-field>
+                          </ng-container>
+
+                          <!-- id Column -->
+                          <ng-container matColumnDef="id">
+                            <th mat-header-cell *matHeaderCellDef class="CabeceraDet"> Id. </th>
+                            <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+                              <!-- <span [hidden]="VOForm.get('VORows').value[i].isEditable"> -->
+                              <mat-form-field style="width: 40px; " appearance="standard">
+                                <input matInput type="number" formControlName="id" [readonly]="true" style="color:red" >
+                              </mat-form-field>
+                              <!-- </span> -->
+                            </td>
+                          </ng-container>
+
+                          <!-- codigo Column -->
+                          <ng-container matColumnDef="codigo">
+                            <th mat-header-cell *matHeaderCellDef class="CabeceraDet"> Codigo </th>
+                            <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+                              <!-- [appearance]="true ? 'outline': 'fill'" -->
+                              <!-- <span [hidden]="VOForm.get('VORows').value[i].isEditable"> -->
+                              <!--
+                              <mat-form-field style="width: 30px;"
+                                [appearance]="VOForm.get('VORows').value[i].isEditable? 'standard' : 'legacy'">
+                                <input matInput type="text" formControlName="codigo" [readonly]="VOForm.get('VORows').value[i].isEditable">
+                              </mat-form-field>
+                              -->
+                              <mat-form-field style="width: 30px;">
+                              <input matInput type="text" formControlName="codigo">
+                            </mat-form-field>
+
+                              <!-- </span> -->
+                            </td>
+                          </ng-container>
+
+                          <!-- nombre Column -->
+                          <ng-container matColumnDef="nombre">
+                            <th mat-header-cell *matHeaderCellDef class="CabeceraDet"> Nombre </th>
+                            <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+                              <!-- <span [hidden]="VOForm.get('VORows').value[i].isEditable"> -->
+                              <!--
+                              <mat-form-field style="width: 250px;"
+                                [appearance]="VOForm.get('VORows').value[i].isEditable? 'standard' : 'legacy'">
+                                <input matInput type="text" formControlName="nombre" [readonly]="VOForm.get('VORows').value[i].isEditable">
+                              </mat-form-field>
+                              -->
+                              <mat-form-field style="width: 250px;">
+                                <input matInput type="text" formControlName="nombre">
+                              </mat-form-field>
+
+                              <!-- </span> -->
+                            </td>
+                          </ng-container>
+
+
+                          <!-- valorIni Column -->
+                          <ng-container matColumnDef="valorIni">
+                            <th mat-header-cell *matHeaderCellDef class="CabeceraDet"> Valor Ini. </th>
+                            <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+                              <!-- <span [hidden]="VOForm.get('VORows').value[i].isEditable"> -->
+                              <!--
+                                <mat-form-field style="width: 90px;"
+                                  [appearance]="VOForm.get('VORows').value[i].isEditable? 'standard' : 'legacy'">
+                                  <input matInput type="number" formControlName="valorIni" [readonly]="VOForm.get('VORows').value[i].isEditable">
+                                </mat-form-field>
+                              -->
+                              <mat-form-field style="width: 90px;">
+                                <input matInput type="number" formControlName="valorIni">
+                              </mat-form-field>
+
+                              <!-- </span> -->
+                            </td>
+                          </ng-container>
+
+                          <!-- valorFin Column -->
+                          <ng-container matColumnDef="valorFin">
+                            <th mat-header-cell *matHeaderCellDef class="CabeceraDet"> Valor Fin </th>
+                            <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+                              <!-- <span [hidden]="VOForm.get('VORows').value[i].isEditable"> -->
+<!--
+                              <mat-form-field style="width: 90px;"
+                                [appearance]="VOForm.get('VORows').value[i].isEditable? 'standard' : 'legacy'">
+                                <input matInput type="number" formControlName="valorFin" [readonly]="VOForm.get('VORows').value[i].isEditable">
+                              </mat-form-field>
+-->
+                              <mat-form-field style="width: 90px;">
+                                <input matInput type="number" formControlName="valorFin">
+                              </mat-form-field>
+
+                              <!-- </span> -->
+                            </td>
+                          </ng-container>
+
+                          <!-- indVisible Column -->
+                          <ng-container matColumnDef="indVisible">
+                            <th mat-header-cell *matHeaderCellDef class="CabeceraDet"> Visible </th>
+                            <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+                              <!-- <span [hidden]="VOForm.get('VORows').value[i].isEditable"> -->
+                              <!--<input matInput type="text" formControlName="indVisible" [readonly]="VOForm.get('VORows').value[i].isEditable">-->
+
+                              <select class="form-control select2" style="width: 70%; font-size:12px" appearance="VOForm.get('VORows').value[i].isEditable? 'standard' : 'legacy'"
+                              data-select2-id="1" tabindex="-1" aria-hidden="true" id="indVisible" formControlName="indVisible">
+
+                                <option *ngFor="let visible of listaVisible" [value]="visible.id">
+                                {{visible.nombre}}
+                                </option>
+                              </select>
+                              <!--  <mat-form-field style="width: 40px;" [appearance]="VOForm.get('VORows').value[i].isEditable? 'standard' : 'legacy'">
+                                  <mat-select  formControlName="indVisible" [disabled]="VOForm.get('VORows').value[i].isEditable" style=" height:auto">
+                                    <mat-option *ngFor="let visible of listaVisible" [value]="visible.id" >
+                                      {{visible.nombre}}
+                                    </mat-option>
+                                  </mat-select>
+                                </mat-form-field> -->
+                              <!-- </span> -->
+                            </td>
+                          </ng-container>
+
+                          <ng-container matColumnDef="action">
+                            <th mat-header-cell *matHeaderCellDef class="CabeceraDet"> Action </th>
+                            <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+                            <!--
+                              <button mat-icon-button class="material-icons app-toolbar-menu save-button"
+                                                      matTooltip="Save Changes" (click)="SaveVO(VOForm,i)"
+                                                      *ngIf="!VOForm.get('VORows').value[i].isEditable" color="primary">
+                                                      <mat-icon>check_circle</mat-icon>
+                                                  </button>
+
+                              <button mat-icon-button class="material-icons app-toolbar-menu cancel-button"
+                                                      matTooltip="Cancel Changes" color="warn"
+                                                      (click)="CancelSVO(VOForm,i)"
+                                                      *ngIf="!VOForm.get('VORows').value[i].isEditable">
+                                                      <mat-icon>cancel</mat-icon>
+                                                  </button>
+
+
+                              <button mat-icon-button class="material-icons app-toolbar-menu save-button"
+                                                      *ngIf="VOForm.get('VORows').value[i].isEditable"
+                                                      matTooltip="Edit" color="primary" (click)="EditSVO(VOForm,i)">
+                                                      <mat-icon>edit</mat-icon>
+                                                  </button>
+
+                              <button mat-icon-button class="material-icons app-toolbar-menu delete-button"
+                                                      *ngIf="VOForm.get('VORows').value[i].isEditable"
+                                                      matTooltip="Delete" color="warn">
+                                                      <mat-icon>delete</mat-icon>
+                                                  </button>
+                              -->
+                              <button mat-icon-button class="material-icons app-toolbar-menu delete-button"
+                                                  matTooltip="Delete" color="warn" (click)="DeleteVO(i)">
+                                                  <mat-icon>delete</mat-icon>
+                                              </button>
+
+                            </td>
+                          </ng-container>
+
+                          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                          <tr mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+
+                          <!-- Row shown when there is no matching data.
+                          https://stackblitz.com/edit/angular-exxqcq?file=app%2Ftable-sticky-footer-example.css,app%2Ftable-sticky-footer-example.html
+                          -->
+                          <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                          </tr>
+                        </table>
+
+                  </ng-container>
+                </form>
+
+                <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
+                  <mat-progress-spinner
+                    color="primary"
+                    mode="indeterminate">
+                  </mat-progress-spinner>
+                </mat-card>
+
+                  <!-- <mat-paginator-goto [length]="100" [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
+                    (page)="paginationChange($event)"></mat-paginator-goto> -->
+
+                  <mat-paginator [pageSizeOptions]="[3, dataSource.data.length>8? dataSource.data.length:0  ]" showFirstLastButtons>
+                  </mat-paginator>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+
+      </div>
+    </div>
+  </div>

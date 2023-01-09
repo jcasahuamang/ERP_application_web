@@ -1,0 +1,280 @@
+<div class="card">
+  <div class="card-header">
+      <h3 class="card-title" style="color:rgb(1, 112, 185)">
+          <i class="far fa-list-alt"></i>
+            &nbsp;
+            Relación de Tipos de Transaccion
+            &nbsp;
+      </h3>
+      <div class="row">
+        <div class="col-md-7">
+
+        </div>
+        <div class="col-md-5">
+          <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" (click)="onResetFormTransaccion()"
+            data-target="#viewModaltransaccion">
+              <i  class="far fa-plus-square"></i>&nbsp;&nbsp;Nuevo
+          </button>
+          &nbsp;&nbsp;
+          <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" (click)="onExportExcel()"
+          >
+            <i class="fa fa-file-excel"></i>&nbsp;&nbsp;Exportar Excel
+          </button>
+          &nbsp;&nbsp;
+          <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" (click)="onExportPdf()"
+          >
+            <i class="fa fa-file-pdf"></i>&nbsp;&nbsp;Exportar PDF
+          </button>
+
+        </div>
+
+      </div>
+
+
+
+    <!--
+    <div class="card-tools">
+      <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+        <i class="fas fa-minus"></i>
+      </button>
+      <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  -->
+  </div>
+
+  <div class="card-body">
+      <!--
+    Cuerpo - Start creating your amazing application!
+ -->
+
+    <div class="col-sm-12">
+      <form (ngSubmit)="onSearchTransaccion()">
+
+          <div class="form-group row">
+              <div class="col-md-9">
+                  <div class="input-group">
+                      <select class="form-control form-control-sm col-md-3" name="selectedBusqueda"  [(ngModel)]="selectedBusqueda">
+                          <option value="Nombre">Nombre</option>
+                      </select>
+                      <input type="text" name="searchInput" [(ngModel)]="searchInput"
+                          class="form-control form-control-sm" placeholder ="  Seleccione tipo de busqueda e ingrese el Valor" autocomplete="off">
+
+
+                      <button type="submit" class="btn btn-sm btn-info">
+                          <i class="fa fa-search"></i> Filtrar
+                      </button>
+
+                  </div>
+              </div>
+          </div>
+
+      </form>
+    </div>
+
+    <div class="table-responsive">
+
+        <table mat-table [dataSource]="transaccionesData" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="Opciones">
+                <th mat-header-cell *matHeaderCellDef> Opciones </th>
+
+                <td mat-cell *matCellDef="let transaccion">
+                    <button type="button" name="editar" (click)="onUpdateTransaccion(transaccion)"
+                        title="Editar Tipo Transaccion" data-toggle="modal" data-target="#viewModaltransaccion"
+                        class="btn button-edit btn-sm">
+                        <i class="far fa-edit"></i>
+                    </button>
+                    &nbsp;
+                    <button type="button" name="eliminar" (click)="onDeleteTransaccion(transaccion)"
+                        title="Eliminar Tipo Transaccion" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash"></i>
+                    </button>
+
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Nombre">
+                <th mat-header-cell *matHeaderCellDef> Nombre</th>
+                <td mat-cell *matCellDef="let transaccion"> {{transaccion.nombre}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Abreviatura">
+              <th mat-header-cell *matHeaderCellDef> Abreviatura </th>
+              <td mat-cell *matCellDef="let transaccion"> {{transaccion.abreviatura}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Tipo">
+              <th mat-header-cell *matHeaderCellDef> Tipo </th>
+              <td mat-cell *matCellDef="let transaccion"> {{transaccion.tipo}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="Estado">
+              <th mat-header-cell *matHeaderCellDef> Estado</th>
+              <td mat-cell *matCellDef="let transaccion">
+                <div *ngIf="transaccion.estado == 1">Activo</div>
+                <div *ngIf="transaccion.estado == 0">Baja</div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="transaccionesCol"></tr>
+            <tr mat-row *matRowDef="let row; columns: transaccionesCol;"></tr>
+
+
+        </table>
+
+        <mat-paginator #paginatortransacciones [pageSizeOptions]="[6,10]" showFirstLastButtons></mat-paginator>
+
+    </div>
+
+
+  </div>
+  <!-- /.card-body -->
+  <!-- <div class="card-footer">
+    Footer
+  </div>
+  -->
+  <!-- /.card-footer-->
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="viewModaltransaccion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h3 class="modal-title" id="exampleModalLongTitle" style="color:rgb(1, 112, 185)" *ngIf="accionNuevo">Creando Tipo Transaccion</h3>
+            <h3 class="modal-title" id="exampleModalLongTitle"  style="color:rgb(1, 112, 185)" *ngIf="!accionNuevo">Editando Tipo Transaccion</h3>
+
+            <button type="button" #closeTransaccion class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+              <div class="container-fluid">
+
+                  <div class="row">
+                      <div class="col-md-12">
+
+                        <form [formGroup]="formTransaccion" (ngSubmit)="onSubmit()" class="form-horizontal">
+
+                          <div class="form-group row mb-2">
+
+                              <div class="col-sm-8">
+                                  <label for="input"> Nombre</label>
+                                  <input type="text" class="form-control form-control-sm" formControlName="nombre" name="nombre"
+                                  [ngClass]="{ 'is-invalid': submitted && f.nombre.errors }">
+                              </div>
+
+                              <div class="col-sm-3">
+                                <label for="input"> Abreviatura</label>
+                                <input type="text" class="form-control form-control-sm" formControlName="abreviatura" name="abreviatura"
+                                [ngClass]="{ 'is-invalid': submitted && f.abreviatura.errors }">
+                            </div>
+
+
+
+
+                          </div>
+
+                          <div class="form-group row mb-2">
+                            <div class="col-sm-8">
+                              <label for="input"> Tipo</label>
+
+                              <select class="form-control select2 select2-hidden-accessible" style="width: 100%;"
+                                data-select2-id="1" tabindex="-1" aria-hidden="true" id="tipo" formControlName="tipo"
+                                [ngClass]="{ 'is-invalid': submitted && f.tipo.errors }">
+
+                                <option value="" disabled>Seleccionar</option>
+                                <option *ngFor="let tipo of listaTipo" [value]="tipo.codigo">
+                                  {{tipo.nombre}}
+                                </option>
+
+                              </select>
+                            </div>
+
+                            <div class="col-sm-3">
+                              <label for="input"> Estado</label>
+
+                              <select class="form-control select2 select2-hidden-accessible" style="width: 100%;"
+                                data-select2-id="1" tabindex="-1" aria-hidden="true" id="estado" formControlName="estado"
+                                [ngClass]="{ 'is-invalid': submitted && f.estado.errors }">
+
+                                <option value="" disabled>Seleccionar</option>
+                                <option *ngFor="let estado of listaEstados" [value]="estado.id">
+                                  {{estado.nombre}}
+                                </option>
+
+                              </select>
+                             </div>
+
+                          </div>
+
+                          <div class="form-group row mb-4">
+
+                          </div>
+
+                          <div class="form-group row mb-2">
+
+                            <div class="col-sm-2">
+                              <label for="input"> Sal. Inicial</label>
+                            </div>
+                            <div class="col-sm-1">
+                             <input type="checkbox" class="form-control form-control-sm" formControlName="Salini" name="Salini">
+                            </div>
+
+                            <div class="col-sm-2">
+                              <label for="input"> Transf. Interno</label>
+                            </div>
+                            <div class="col-sm-1">
+                              <input type="checkbox" class="form-control form-control-sm" formControlName="Interno" name="Interno">
+                            </div>
+
+                            <div class="col-sm-2">
+                              <label for="input"> Transf. Externa</label>
+                            </div>
+                            <div class="col-sm-1">
+                             <input type="checkbox" class="form-control form-control-sm" formControlName="Externo" name="Externo">
+                            </div>
+
+                          </div>
+
+                          <div class="form-group row mb-2">
+
+                          </div>
+
+
+                          <div class="form-group row mb-2">
+                            <div class="col-sm-10 text-right">
+                              <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cerrar</button>
+                            </div>
+
+                            <div class="col-sm-2 text-right">
+                                <button type="submit" class="btn btn-outline-success" #closeBtn>Guardar</button>
+                            </div>
+                        </div>
+                        </form>
+
+                      </div>
+                  </div>
+
+              </div>
+
+          </div>
+
+          <div class="modal-footer">
+            <!--
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn btn-info" #closeBtn>Guardar</button>
+              -->
+          </div>
+
+        </div>
+    </div>
+</div>

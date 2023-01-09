@@ -1,0 +1,116 @@
+p {
+    font-family: "Trajan";
+  }
+
+  p.tabla {
+  font-size: 11px;
+  }
+
+  label{
+    font-family: "Trajan";
+  }
+
+  table {
+    width: 100%;
+  }
+  .mat-header-row{
+      height: auto;
+  }
+  .mat-row:nth-child(even) {
+      background-color:white;
+  }
+  .mat-row:nth-child(odd) {
+      background-color: #f7f7f7;
+  }
+  .mat-header-cell {
+    color: white;
+    background-color: rgb(124, 196, 179);
+    padding: 10px 10px 10px 0;
+  }
+
+  .mat-header-cell-back {
+      color: white;
+      background-color: #2A5C9E;
+      padding: 10px 10px 10px 0;
+  }
+  .mat-row {
+      height: auto;
+  }
+  .mat-cell {
+      padding: 3px 3px 3px 0;
+  }
+
+  * {
+    border-radius: 0 !important;
+  }
+
+  * {
+    -webkit-border-radius: 0 !important;
+       -moz-border-radius: 0 !important;
+            border-radius: 0 !important;
+  }
+  .div.border{
+    border-style: solid;
+  }
+
+   .button-edit{
+    background-color: #8cb7ec;
+  }
+
+  .button-acceso{
+      background-color: #969696;
+  }
+
+  .button-delete{
+      background-color: #f80000;
+  }
+
+  .div.letter {
+  font-size: 50px;
+  }
+
+  .modal {
+  overflow-y:auto;
+  }
+
+  /*********************************/
+/*
+  https://stackblitz.com/edit/angular-custom-pagination-mat-table?file=src%2Fapp%2Ftable-basic-example.html,src%2Fapp%2Ftable-basic-example.ts
+  */
+.mat-paginator-range-label {
+  display: none;
+}
+
+.mat-form-field {
+font-size: 12px;
+width: 100%;
+}
+
+
+/* Border */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+color: rgb(255, 255, 255);
+/* background-color: white; */
+}
+/* Font color */
+input.mat-input-element {
+color: rgb(0, 0, 0);
+}
+
+.CabeceraDet{
+  color: black;
+  background-color: white;
+}
+
+.TablaDet {
+  width: 100%;
+}
+
+/*
+tr.mat-footer-row,
+tr.mat-row {
+  border: 1px solid #e7e7e7;
+  font-weight: bold;
+  height: 20px !important;
+}
+*/
